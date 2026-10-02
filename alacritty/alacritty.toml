@@ -1,0 +1,25 @@
+
+[general]
+import = [
+    "~/.config/alacritty/themes/macchiato.toml"
+]
+
+working_directory = "/home/jaz/Desktop/coding/ssh"
+
+[terminal]
+
+shell = { program = "/bin/zsh" }
+
+[font]
+
+normal = { family = "Hack Nerd Font", style = "Bold" }
+bold   = { family = "Hack Nerd Font", style = "Bold" }
+italic = { family = "Hack Nerd Font", style = "Italic" }
+
+size = 20
+
+[window]
+
+startup_mode = "Windowed"
+decorations = "None"
+
