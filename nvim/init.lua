@@ -168,43 +168,29 @@ hl(0, "TabLineSel",    { fg = c.yellow, bg = "none" })
 vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
 
---vim.o.updatetime = 500
---
---vim.api.nvim_create_autocmd('CursorHold', {
---  callback = function()
---    vim.lsp.buf.hover()
---  end,
---})
---
---vim.lsp.config['clangd'] = {
---
--- -- Command and arguments to start the server.
---
---  cmd = { 'clangd' },
---
---  -- Filetypes to automatically attach to.
---
---  filetypes = { 'cpp' },
---
---  -- Sets the workspace "root" to the directory where any of these files is found.
---
---  -- Files sharing a root will reuse the LSP client/connection.
---
---  -- Nested lists indicate equal priority, see |vim.lsp.Config|.
---
---  root_markers = { 'compile_commands.json' },
---
---  -- Server-specific settings. https://github.com/EmmyLuaLs/emmylua-analyzer-rust/blob/main/docs/config/emmyrc_json_EN.md
---
---  settings = {
---
---
---  }
---
---
---}
---
---vim.lsp.enable('clangd')
+ --vim.o.updatetime = 500
+ --
+ --vim.api.nvim_create_autocmd('CursorHold', {
+ --  callback = function()
+ --    vim.lsp.buf.hover()
+ --  end,
+ --})
+
+vim.filetype.add({
+    extension = {
+        h = "cpp",
+        hpp = "cpp",
+    },
+})
+
+vim.lsp.config['clangd'] = {
+    cmd = { 'clangd' },
+    filetypes = { 'c', 'cpp' },
+    root_markers = { 'compile_commands.json' },
+    settings = {},
+}
+
+vim.lsp.enable('clangd')
 --vim.keymap.set('n', '<Leader>K', vim.lsp.buf.hover)
 
 require("config.lazy")
@@ -213,3 +199,13 @@ vim.keymap.set('n', '<Leader>e', '<cmd>Telescope find_files<CR>')
 vim.keymap.set('n', '<Leader>eg', '<cmd>Telescope live_grep<CR>')
 vim.keymap.set('n', '<Leader>eb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', '<Leader>eh', '<cmd>Telescope help_tags<CR>')
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'cpp', 'js', 'c', 'py', 'lua' },
+  callback = function() 
+    vim.treesitter.start() 
+	vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+	vim.wo[0][0].foldmethod = 'indent'
+  end,
+})
+
