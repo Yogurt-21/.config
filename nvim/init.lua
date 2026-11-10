@@ -13,7 +13,17 @@ vim.g.have_nerd_font = true
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 
-vim.o.shiftwidth = 4
+vim.opt.shiftwidth = 2     -- Number of spaces to use for each step of indent
+vim.opt.tabstop = 2        -- Number of spaces that a <Tab> in the file counts for
+vim.opt.softtabstop = 2    -- Number of spaces that a <Tab> counts for while performing editing operations
+vim.opt.expandtab = true 
+
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "python",
+    callback = function()
+        vim.opt_local.shiftwidth = 2
+    end,
+})
 
 -- Make line numbers default
 -- vim.o.number = true
@@ -50,7 +60,6 @@ vim.o.undofile = true
 
 -- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.o.ignorecase = true
-vim.o.smartcase = true
 
 -- Keep signcolumn on by default
 vim.o.signcolumn = 'yes'
@@ -76,7 +85,7 @@ vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' }
  vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 --My Custom Config
- vim.keymap.set('n', '<Leader>w', '<cmd>w!<CR>')
+ vim.keymap.set('n', '<Leader>w', ':w ')
  vim.keymap.set('n', '<Leader>t', '<cmd>tabnew<CR>')
  vim.keymap.set('n', '<Leader>q', '<cmd>wq<CR>')
  vim.keymap.set('n', '<Leader>qq', '<cmd>q!<CR>')
@@ -176,21 +185,21 @@ vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
  --  end,
  --})
 
-vim.filetype.add({
-    extension = {
-        h = "cpp",
-        hpp = "cpp",
-    },
-})
-
-vim.lsp.config['clangd'] = {
-    cmd = { 'clangd' },
-    filetypes = { 'c', 'cpp' },
-    root_markers = { 'compile_commands.json' },
-    settings = {},
-}
-
-vim.lsp.enable('clangd')
+ --vim.filetype.add({
+ --    extension = {
+ --        h = "cpp",
+ --        hpp = "cpp",
+ --    },
+ --})
+ --
+ --vim.lsp.config['clangd'] = {
+ --    cmd = { 'clangd' },
+ --    filetypes = { 'c', 'cpp' },
+ --    root_markers = { 'compile_commands.json' },
+ --    settings = {},
+ --}
+ --
+ --vim.lsp.enable('clangd')
 --vim.keymap.set('n', '<Leader>K', vim.lsp.buf.hover)
 
 require("config.lazy")
@@ -201,7 +210,7 @@ vim.keymap.set('n', '<Leader>eb', '<cmd>Telescope buffers<CR>')
 vim.keymap.set('n', '<Leader>eh', '<cmd>Telescope help_tags<CR>')
 
 vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'cpp', 'js', 'c', 'py', 'lua' },
+  pattern = { 'cpp', 'js', 'c', 'py', 'lua', 'go' },
   callback = function() 
     vim.treesitter.start() 
 	vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
